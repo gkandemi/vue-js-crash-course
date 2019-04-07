@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Vue.js | Yazılımbilimi</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        ul {
+            margin: 0px;
+            margin-top:10px;
+            padding: 0px;
+            list-style-type: none;
+            width: 300px;
+        }
+        li{
+            padding: 5px 5px;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+        }
+
+        .red {
+            background-color: coral;
+        }
+
+        .green{
+            background-color: limegreen;
+        }
+
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <ul>
+        <li v-for="item in list">{{ item }}</li>
+      </ul>
+      <hr />
+      <div v-for="(value, key) in personel">
+        <strong>{{ key }} </strong> <span>{{ value }}</span>
+      </div>
+      <hr />
+      Adet : <input type="text" v-model="sellCount" />
+      <ul>
+        <li v-for="product in productList" :class="backgroundByCount(product)">
+          <span>{{ product.title }} - {{ product.count }} </span>
+          <button :disabled="product.count == 0" @click="sellProduct(product)">Satıldı</button>
+        </li>
+      </ul>
+      <p v-if="sellWarning" style="color: red; font-weight: bold;">Girdiğiniz Miktar stok adetlerinden fazladır...</p>
+    </div>
+
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          sellCount: 0,
+          sellWarning : false,
+          list: ["Elma", "Armut", "Kiraz"],
+          personel: {
+            name: "Gökhan",
+            lastname: "Kandemir",
+            email: "gokhan@gkandemir.com"
+          },
+          productList: [
+            {
+              title: "MacBook Pro",
+              price: 100,
+              count: 0
+            },
+            {
+              title: "iPhone",
+              price: 50,
+              count: 100
+            },
+            {
+              title: "Klavye",
+              price: 10,
+              count: 1000
+            }
+          ]
+        },
+        methods : {
+            sellProduct(product){
+                if(this.sellCount > product.count){
+                    this.sellWarning = true    
+                } else {
+                    product.count = product.count - this.sellCount
+                    this.sellWarning = false
+                }
+                
+            },
+            backgroundByCount(product){
+                return {'green' : product.count > 0, 'red' : product.count <= 0}
+            }
+        },
+        computed : {
+            
+        }
+      });
+    </script>
+  </body>
+</html>
